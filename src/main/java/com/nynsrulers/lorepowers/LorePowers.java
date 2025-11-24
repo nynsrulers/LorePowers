@@ -548,18 +548,18 @@ public final class LorePowers extends JavaPlugin implements Listener {
                 // sike
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 0, 0, true, true, true));
             }
-            }else{
-                if (player != null) {
-                    boolean hasAllEffects = player.hasPotionEffect(PotionEffectType.STRENGTH) && Objects.requireNonNull(player.getPotionEffect(PotionEffectType.STRENGTH)).getAmplifier() == 1 &&
-                            player.hasPotionEffect(PotionEffectType.SLOWNESS) && Objects.requireNonNull(player.getPotionEffect(PotionEffectType.SLOWNESS)).getAmplifier() == 0;
-    
-                    if (hasAllEffects) {
-                        player.removePotionEffect(PotionEffectType.STRENGTH);
-                        player.removePotionEffect(PotionEffectType.SLOWNESS);
-                        player.sendMessage(CoreTools.getInstance().getPrefix() + ChatColor.RED + "Can't believe bro got debuffed :/");
-                    }
+        } else {
+            if (player != null) {
+                boolean hasAllEffects = player.hasPotionEffect(PotionEffectType.STRENGTH) && Objects.requireNonNull(player.getPotionEffect(PotionEffectType.STRENGTH)).getAmplifier() == 1 &&
+                        player.hasPotionEffect(PotionEffectType.SLOWNESS) && Objects.requireNonNull(player.getPotionEffect(PotionEffectType.SLOWNESS)).getAmplifier() == 0;
+
+                if (hasAllEffects) {
+                    player.removePotionEffect(PotionEffectType.STRENGTH);
+                    player.removePotionEffect(PotionEffectType.SLOWNESS);
+                    player.sendMessage(CoreTools.getInstance().getPrefix() + ChatColor.RED + "Can't believe bro got debuffed :/");
                 }
             }
+        }
         if (player != null) {
             // scale management
             // todo: make this a switch statement if possible
