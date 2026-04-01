@@ -10,3 +10,5 @@ Prefix: '&7[&dLore&7]'
 PowerLinks:
   eb7ea62d-b7aa-4d6e-b68a-d7e948780f03: # This is Aelithron's UUID.
     - "VOID_TOTEMS" # Specify each of their powers.
+  30759bd7-e1db-4d60-9f8b-17991b33153a: # Ravenwester's UUID.
+    - "LIGHT_WEIGHT"
