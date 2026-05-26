@@ -1,5 +1,6 @@
-package com.nynsrulers.lorepowers;
+package com.nynsrulers.lorepowers.commands;
 
+import com.nynsrulers.lorepowers.Power;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

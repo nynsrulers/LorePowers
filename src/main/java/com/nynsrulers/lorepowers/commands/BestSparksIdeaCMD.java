@@ -1,5 +1,8 @@
-package com.nynsrulers.lorepowers;
+package com.nynsrulers.lorepowers.commands;
 
+import com.nynsrulers.lorepowers.CoreTools;
+import com.nynsrulers.lorepowers.LorePowers;
+import com.nynsrulers.lorepowers.Power;
 import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
@@ -10,10 +13,10 @@ import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class BestSparksIdea implements CommandExecutor {
+public class BestSparksIdeaCMD implements CommandExecutor {
     private final LorePowers plugin;
 
-    public BestSparksIdea(LorePowers plugin) {
+    public BestSparksIdeaCMD(LorePowers plugin) {
         this.plugin = plugin;
     }
 

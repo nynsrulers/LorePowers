@@ -17,14 +17,14 @@ repositories {
         url = "https://oss.sonatype.org/content/groups/public/"
     }
     maven {
-        name = "md5-repo"
-        url = "https://repo.md-5.net/content/groups/public/"
+        name = "libs-disguises"
+        url = "https://mvn.lib.co.nz/public/"
     }
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
-    implementation(group: 'me.libraryaddict.disguises', name: 'libsdisguises', version: '11.0.0')
+    implementation("me.libraryaddict.disguises:libsdisguises:11.0.0")
 }
 
 tasks {

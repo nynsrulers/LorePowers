@@ -1,5 +1,9 @@
-package com.nynsrulers.lorepowers;
+package com.nynsrulers.lorepowers.commands;
 
+import com.nynsrulers.lorepowers.CooldownManager;
+import com.nynsrulers.lorepowers.CoreTools;
+import com.nynsrulers.lorepowers.LorePowers;
+import com.nynsrulers.lorepowers.Power;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
