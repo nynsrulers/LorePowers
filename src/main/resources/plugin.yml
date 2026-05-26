@@ -13,6 +13,7 @@ commands:
     description: The plugin's main management command.
     aliases:
       - powermgr
+      - power
   dragonform:
     description: Become a dragon, and gain the advanced powers with it.
     aliases:
