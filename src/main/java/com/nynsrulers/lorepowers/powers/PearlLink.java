@@ -1,8 +1,10 @@
 package com.nynsrulers.lorepowers.powers;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 import com.nynsrulers.lorepowers.CooldownManager;
@@ -11,21 +13,21 @@ import com.nynsrulers.lorepowers.LorePowers;
 import com.nynsrulers.lorepowers.Power;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Endermite;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
-
-// decided to not pile all the code, much easier to read
 
 public class PearlLink implements Listener {
 
     private final LorePowers plugin;
     private final Map<UUID, UUID> pearlLink = new HashMap<>();
+    private final Set<UUID> recentlyDied = new HashSet<>();
 
     public PearlLink(LorePowers plugin) {
         this.plugin = plugin;
@@ -37,17 +39,11 @@ public class PearlLink implements Listener {
 
         if (!plugin.checkPower(tper.getUniqueId(), Power.PEARL_LINK)) return;
 
+        if (!((event.getRightClicked() instanceof Player tped) && tper.isSneaking())) return;
+
         if (CooldownManager.getInstance().checkCooldown(tper.getUniqueId(), Power.PEARL_LINK)) {
             event.setCancelled(true);
             tper.sendMessage(CoreTools.getInstance().getPrefix() + ChatColor.RED + "You drained too much dimension power, you can't link anyone right now.");
-            return;
-        }
-
-        if (!tper.isSneaking()) return;
-        if (!(event.getRightClicked() instanceof Player tped)) return;
-
-        if (pearlLink.containsKey(tper.getUniqueId())) {
-            tper.sendMessage(CoreTools.getInstance().getPrefix() + ChatColor.RED + "You already have someone linked!");
             return;
         }
 
@@ -69,25 +65,41 @@ public class PearlLink implements Listener {
 
         event.setCancelled(true);
         tped.teleport(event.getTo());
-        tped.sendMessage(CoreTools.getInstance().getPrefix() + ChatColor.BLUE + "bro got bamboozled");
+        tped.sendMessage(CoreTools.getInstance().getPrefix() + ChatColor.BLUE + "you just got get got");
 
-        CooldownManager.getInstance().addCooldown(tper.getUniqueId(), Power.PEARL_LINK, 1800L);
+        CooldownManager.getInstance().addCooldown(tper.getUniqueId(), Power.PEARL_LINK, 2400L);
         pearlLink.remove(tper.getUniqueId());
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        recentlyDied.add(event.getEntity().getUniqueId());
     }
 
     @EventHandler
     public void dimensionChange(PlayerChangedWorldEvent event) {
         Player changer = event.getPlayer();
 
+        if (recentlyDied.remove(changer.getUniqueId())) {
+            return;
+        }
+
         if (!plugin.checkPower(changer.getUniqueId(), Power.PEARL_LINK)) return;
 
-        Location coords = changer.getLocation();
         Random chance = new Random();
 
-        if (chance.nextDouble() < 0.80)
-            changer.getWorld().spawnEntity(coords, EntityType.ENDERMITE);
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            Location coords = changer.getLocation();
 
-        if (chance.nextDouble() < 0.20)
-            changer.getWorld().spawnEntity(coords, EntityType.ENDERMITE);
+            if (chance.nextDouble() < 0.80) {
+                Endermite mite = changer.getWorld().spawn(coords, Endermite.class);
+                mite.setPortalCooldown(200);
+            }
+
+            if (chance.nextDouble() < 0.20) {
+                Endermite mite = changer.getWorld().spawn(coords, Endermite.class);
+                mite.setPortalCooldown(200);
+            }
+        });
     }
 }
