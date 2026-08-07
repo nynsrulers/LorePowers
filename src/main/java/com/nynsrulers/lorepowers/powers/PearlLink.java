@@ -28,6 +28,7 @@ public class PearlLink implements Listener {
     private final LorePowers plugin;
     private final Map<UUID, UUID> pearlLink = new HashMap<>();
     private final Set<UUID> recentlyDied = new HashSet<>();
+    private final Set<UUID> clicking = new HashSet<>();
 
     public PearlLink(LorePowers plugin) {
         this.plugin = plugin;
@@ -39,7 +40,19 @@ public class PearlLink implements Listener {
 
         if (!plugin.checkPower(tper.getUniqueId(), Power.PEARL_LINK)) return;
 
+        if (!clicking.add(tper.getUniqueId())) return;
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            clicking.remove(tper.getUniqueId());
+        }, 2L);
+
         if (!((event.getRightClicked() instanceof Player tped) && tper.isSneaking())) return;
+
+        if (pearlLink.containsKey(tper.getUniqueId())) {
+            event.setCancelled(true);
+            tper.sendMessage(CoreTools.getInstance().getPrefix() + ChatColor.RED + "You already have someone linked!");
+            return;
+        }
 
         if (CooldownManager.getInstance().checkCooldown(tper.getUniqueId(), Power.PEARL_LINK)) {
             event.setCancelled(true);
